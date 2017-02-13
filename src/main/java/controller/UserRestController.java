@@ -25,30 +25,31 @@ public class UserRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity getUserById(@PathVariable String id) {
-        return new ResponseEntity<>(userDao.findById(id), HttpStatus.OK);
+        User user = userDao.findById(id);
+        return null != user
+                ? new ResponseEntity<>(user, HttpStatus.OK)
+                : new ResponseEntity<>(String.format("User not found id=[%s]", id), HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
     public ResponseEntity createUser(@RequestBody User user) {
-        userDao.insert(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userDao.insert(user), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUser(@PathVariable String id) {
-        if (null == userDao.delete(id)) {
-            return new ResponseEntity<>("No User found for ID " + id, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return null != userDao.delete(id)
+                ? new ResponseEntity<>(id, HttpStatus.OK)
+                : new ResponseEntity<>(String.format("User not found id=[%s]", id), HttpStatus.NOT_FOUND);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity updateUser(@PathVariable String id, @RequestBody User user) {
+        user.setId(id);
         user = userDao.update(user);
-        if (null == user) {
-            return new ResponseEntity<>("No User found for ID " + id, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return null != user
+                ? new ResponseEntity<>(user, HttpStatus.OK)
+                : new ResponseEntity<>(String.format("User not found id=[%s]", id), HttpStatus.NOT_FOUND);
     }
 }
