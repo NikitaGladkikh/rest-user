@@ -8,9 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-import java.util.List;
-
 /**
  * Created by KO on 11.02.2017.
  */
@@ -54,18 +51,4 @@ public class UserRestController {
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-
-    @PostConstruct
-    void initData() {
-        userDao.insert(new User("John", "Whiley"));
-        userDao.insert(new User("Benedict", "Cumbercratch"));
-        userDao.insert(new User("Sara", "Conor"));
-        userDao.insert(new User("Mace", "Windu"));
-        userDao.insert(new User("Jack", "Sparrow"));
-        userDao.insert(new User("John", "Snow"));
-        userDao.insert(new User("Chip", "Dale"));
-        userDao.insert(new User("Glint", "Vine"));
-        userDao.insert(new User("Jeepers", "Creepers"));
-    }
-
 }
